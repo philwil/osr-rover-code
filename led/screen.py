@@ -21,6 +21,18 @@ import socket
 5 - Purple
 6 - Light Blue
 7 - White
+
+server.bind((socket.gethostname(), port))
+server.listen(5)
+(clientsock, address) = serversocket.accept()
+#now do something with the clientsocket
+#in this case, we'll pretend this is a threaded server
+ct = client_thread(clientsock)
+ct.run()
+
+ct.run does something like this 
+datagram = int(clientsock.recv(1024))
+
 '''
 class screenUpdater():
 	def __init__(self):
