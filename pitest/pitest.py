@@ -28,6 +28,45 @@ switchPumpTime=2
 maxLevel= 5
 pump = "off"
 
+class Pump:
+    ' Pump Class '
+
+    def __init__(self, maxTime, switchTime, state):
+        self.time = 0
+        self.maxTime = maxTime
+        self.switchTime = switchTime
+        self.state = state
+
+class Level:
+    ' Water Level Class'
+
+    def __init__(self, maxLevel, pump, timeout=0.01, retries=3):
+	self.maxLevel = maxLevel
+	#self._port = comport
+	self.pump = pump
+        print pump
+        self.timeout = timeout;
+        self._trystimeout = retries
+        self._crc = 0;
+
+    def testLevel(self, level):
+        #global level
+        #global maxLevel
+        #global pump
+        #global pumpTime
+        #global maxPumpTime
+        print ">>testLevel"
+        if(level > self.maxLevel) :
+            print ">>turn on pump"
+            self.pump.state = "on"
+            self.pump.time = self.pump.maxTime
+
+        if(level > 0):
+            level = level -1;
+        print ">>testLevel done"
+        return 1
+
+
 def testLevel():
     global level
     global maxLevel
@@ -82,7 +121,8 @@ def closedown():
     print "close down"
         
 def main():
-	#myScreenUpdater = screenUpdater()
+	myPump = Pump(10, 2, "off")
+	myLevel = Level(6, myPump)
 	#myScreenUpdater.createServer()
 	#screenSock = myScreenUpdater.server
 	#dataListThread = threading.Thread
@@ -91,6 +131,7 @@ def main():
         #testLevel()
         #testSwitch()
         #testPump()
+
         
 	while True:
             try:
@@ -101,6 +142,9 @@ def main():
                 print "breaking loop"
 		break
         closedown()
+        
+        myLevel.testLevel(8)
+        myLevel.testLevel(4)
         
 if __name__ == '__main__':
 	main()
